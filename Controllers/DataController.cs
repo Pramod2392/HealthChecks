@@ -93,7 +93,11 @@ public class DataController : ControllerBase
         {
             string output = "";
 
-            System.Data.SqlClient.SqlConnection dbConnection = new(_configuration.GetValue<string>("SQLDBConnecrion"));
+            string sqlDBConnectionStringIdentifier = _configuration.GetValue<string>("SQLDBConnectionStringIdentifier");
+
+            string sqlDBConnectionString = _secretClient.GetSecret(sqlDBConnectionStringIdentifier).Value.Value;
+
+            System.Data.SqlClient.SqlConnection dbConnection = new(sqlDBConnectionString);
 
             System.Data.SqlClient.SqlCommand cmd = new();
             var firstNameSQLParameter = cmd.CreateParameter();
